@@ -1,0 +1,44 @@
+`timescale 1ns/1ns	//时间单位/精度
+
+module tb_BinaryGrayConvert();
+
+parameter DATA_WIDTH  = 8;
+
+reg     clk,rst_n;
+reg 	[DATA_WIDTH-1:0]		binary_in ; //二进制码输入
+reg 	[DATA_WIDTH-1:0]		gray_in   ; //格雷码输入
+wire	[DATA_WIDTH-1:0]		binary_out; //二进制码输出
+wire	[DATA_WIDTH-1:0]		gray_out  ; //格雷码输出
+
+initial begin
+  clk = 1'b0;
+  rst_n <= 1'b0;
+  #20 
+  rst_n <= 1'b1;
+end
+
+always #10 clk = ~clk;
+
+always @(posedge clk or negedge rst_n)
+  if(!rst_n) begin
+    binary_in <= 8'b0000_0000;
+    gray_in <= 8'b0000_0000;	
+  end
+  else begin
+    binary_in <= binary_in + 1'b1;
+    gray_in <= gray_in + 1'b1;	
+  end
+    
+BinaryGrayConvert
+#(
+  .DATA_WIDTH(DATA_WIDTH) //二进制码/格雷码位宽
+)
+BinaryGrayConvert_inst
+(
+  .binary_in (binary_in ), //二进制码输入
+  .gray_in   (gray_in   ), //格雷码输入
+  .binary_out(binary_out), //二进制码输出
+  .gray_out  (gray_out  )  //格雷码输出
+);
+
+endmodule
