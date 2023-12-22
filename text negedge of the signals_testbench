@@ -1,0 +1,39 @@
+`timescale 1ns / 1ps
+module edge_detect_tb () ;
+
+reg clk;
+reg rst_n;
+reg signal;
+
+wire up_edge;
+wire down_edge;
+wire both_edge;
+
+edge_detect u1(.clk(clk),
+.rst_n(rst_n),
+.signal(signal),
+.up_edge(up_edge),
+.down_edge(down_edge),
+.both_edge(both_edge));
+
+always #5 clk = !clk;
+
+initial
+begin
+clk = 0;
+rst_n = 1;
+signal = 0;
+#10
+rst_n = 0;
+#23
+rst_n = 1;
+#16
+signal = 1;
+#50
+signal = 0;
+#40
+$stop;
+end
+
+endmodule
+
